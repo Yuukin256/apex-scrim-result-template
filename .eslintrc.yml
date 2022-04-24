@@ -21,11 +21,12 @@ parserOptions:
 
 rules:
   import/order:
-    - 2
+    - error
     - alphabetize:
         order: 'asc'
+  '@typescript-eslint/consistent-type-imports': error
   # react/jsx-key:
-  #   - 'error'
+  #   - error
   #   - checkFragmentShorthand: true
   #     warnOnDuplicates: true
 
