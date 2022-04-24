@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout master
+      - name: Checkout
         uses: actions/checkout@master
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '^16.6.0'
+          node-version: '^14'
           cache: 'yarn'
 
       - name: Install dependencies
@@ -27,27 +27,3 @@ jobs:
 
       - name: Run lint
         run: yarn lint
-
-  test:
-    name: Test
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '^16.6.0'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Run test
-        run: yarn test:coverage --passWithNoTests
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v2
