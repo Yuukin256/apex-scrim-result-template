@@ -1,2 +1,2 @@
 '*.{js,ts,jsx,tsx,json}': ['npx prettier --write']
-'*.{js,ts,jsx,tsx}': ['npx eslint --fix']
+'!(next.config).{js,ts,jsx,tsx}': ['npx eslint --fix']
