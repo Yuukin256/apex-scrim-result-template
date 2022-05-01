@@ -22,8 +22,20 @@ parserOptions:
 rules:
   import/order:
     - error
-    - alphabetize:
-        order: 'asc'
+    - groups:
+        - builtin
+        - external
+        - internal
+        - parent
+        - sibling
+        - index
+        - object
+        - type
+
+      alphabetize:
+        order: asc
+
+      newlines-between: always
   '@typescript-eslint/consistent-type-imports': error
   react/jsx-key:
     - error
