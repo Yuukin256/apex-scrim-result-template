@@ -66,8 +66,7 @@ const Footer: FC = () => {
         <Stack spacing='sm'>
           <Text color='dimmed' size='sm'>
             このサイトはGoogle Analyticsを使用しています (
-            <EL href='https://policies.google.com/technologies/partner-sites?hl=ja'>詳細</EL>
-            )。
+            <EL href='https://policies.google.com/technologies/partner-sites?hl=ja'>詳細</EL>)
           </Text>
           <Text color='dimmed' size='sm'>
             Built by <EL href='https://twitter.com/Yuukin256'>Yuukin256</EL> with{' '}
