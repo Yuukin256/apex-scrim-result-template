@@ -37,6 +37,7 @@ rules:
 
       newlines-between: always
   '@typescript-eslint/consistent-type-imports': error
+  unused-imports/no-unused-imports: warn
   react/jsx-key:
     - error
     - checkFragmentShorthand: true
