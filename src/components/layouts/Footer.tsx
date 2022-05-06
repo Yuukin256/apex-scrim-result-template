@@ -9,8 +9,8 @@ import type { FC } from 'react';
 
 const useStyles = createStyles((theme) => ({
   footer: {
-    position: 'relative',
-    bottom: 0,
+    position: 'sticky',
+    top: '100vh',
     left: 0,
     right: 0,
     paddingTop: theme.spacing.xl * 2,

@@ -34,7 +34,6 @@ const Layout: FC<Props> = (props) => {
               root: {
                 backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
                 minHeight: '100vh',
-                position: 'relative',
               },
             })}
           >
