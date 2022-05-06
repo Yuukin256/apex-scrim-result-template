@@ -3,11 +3,11 @@ import { Burger, createStyles, Group, Header as MHeader, MediaQuery, Title } fro
 import ThemeSwitch from 'components/layouts/ThemeSwitch';
 import { siteData } from 'data/siteData';
 
-import type { FC, SetStateAction } from 'react';
+import type { Dispatch, FC, SetStateAction } from 'react';
 
 interface HeaderProps {
   navbarOpened: boolean;
-  toggleNavbarOpened: (value?: SetStateAction<boolean> | undefined) => void;
+  setNavbarOpened: Dispatch<SetStateAction<boolean>>;
 }
 
 const useStyles = createStyles((theme) => ({
@@ -21,9 +21,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const Header: FC<HeaderProps> = ({ navbarOpened, toggleNavbarOpened }) => {
+const Header: FC<HeaderProps> = ({ navbarOpened, setNavbarOpened }) => {
   const { classes, theme } = useStyles();
-  const handleBurgerClick = () => toggleNavbarOpened((prev) => !prev);
+  const handleBurgerClick = () => setNavbarOpened((prev) => !prev);
 
   return (
     <MHeader height={50} className={classes.header}>

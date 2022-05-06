@@ -10,7 +10,7 @@ interface ApiResponseData {
 export const useOtherSite = (shouldFetch: boolean): { data: ApiResponseData[] | undefined; error: unknown } => {
   const [state, setState] = useState<ApiResponseData[] | undefined>();
 
-  const { data, error } = useSWR<ApiResponseData[]>(shouldFetch ? '/api/otherSite' : null, (url) =>
+  const { data, error } = useSWR<ApiResponseData[]>(shouldFetch ? '/api/otherSite/' : null, (url) =>
     fetch(url).then((res) => res.json())
   );
 

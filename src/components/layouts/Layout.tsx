@@ -1,6 +1,5 @@
 import { AppShell, Container, Transition } from '@mantine/core';
-import { useBooleanToggle } from '@mantine/hooks';
-import { useEffect } from 'react';
+import { useBoolean, useEffectOnce } from 'usehooks-ts';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -13,21 +12,20 @@ interface Props {
 }
 
 const Layout: FC<Props> = (props) => {
-  const [navbarOpened, toggleNavbarOpened] = useBooleanToggle(false);
+  const { value: navbarOpened, setValue: setNavbarOpened } = useBoolean(false);
 
-  const [mounted, toggleMounted] = useBooleanToggle(false);
-  useEffect(() => {
-    toggleMounted(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { value: mounted, setValue: setMounted } = useBoolean(false);
+  useEffectOnce(() => {
+    setMounted(true);
+  });
 
   return (
     <Transition mounted={mounted} transition='fade' duration={400} timingFunction='ease-in'>
       {(styles) => (
         <div style={styles}>
           <AppShell
-            header={<Header navbarOpened={navbarOpened} toggleNavbarOpened={toggleNavbarOpened} />}
-            navbar={<Navbar opened={navbarOpened} toggleOpened={toggleNavbarOpened} />}
+            header={<Header navbarOpened={navbarOpened} setNavbarOpened={setNavbarOpened} />}
+            navbar={<Navbar opened={navbarOpened} setOpened={setNavbarOpened} />}
             footer={<Footer />}
             padding={0}
             styles={(theme) => ({

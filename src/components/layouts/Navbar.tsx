@@ -12,18 +12,18 @@ import {
   Loader,
   Center,
 } from '@mantine/core';
-import { useMediaQuery, useScrollLock } from '@mantine/hooks';
 import { IconExternalLink, IconListSearch, IconTournament } from '@tabler/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useLockedBody, useMediaQuery } from 'usehooks-ts';
 
 import ExternalLink from 'components/atoms/ExternalLink';
 import ThemeSwitch from 'components/layouts/ThemeSwitch';
 import { siteData } from 'data/siteData';
 import { useOtherSite } from 'hooks/useOtherSite';
 
-import type { FC, SetStateAction } from 'react';
+import type { FC, SetStateAction, Dispatch } from 'react';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -91,7 +91,7 @@ const useStyles = createStyles((theme) => ({
 
 interface NavbarProps {
   opened: boolean;
-  toggleOpened: (value?: SetStateAction<boolean> | undefined) => void;
+  setOpened: Dispatch<SetStateAction<boolean>>;
 }
 
 const OtherSite: FC<{ opened: boolean }> = ({ opened }) => {
@@ -130,7 +130,7 @@ const OtherSite: FC<{ opened: boolean }> = ({ opened }) => {
   );
 };
 
-const Navbar: FC<NavbarProps> = ({ opened, toggleOpened }) => {
+const Navbar: FC<NavbarProps> = ({ opened, setOpened }) => {
   const { classes, cx, theme } = useStyles();
   const { pathname } = useRouter();
 
@@ -139,7 +139,7 @@ const Navbar: FC<NavbarProps> = ({ opened, toggleOpened }) => {
       <Box
         component='a'
         className={cx(classes.link, { [classes.linkActive]: pathname === item.url })}
-        onClick={() => toggleOpened(false)}
+        onClick={() => setOpened(false)}
       >
         {item.label}
       </Box>
@@ -154,7 +154,7 @@ const Navbar: FC<NavbarProps> = ({ opened, toggleOpened }) => {
   ));
 
   // Navbar を全幅表示中はスクロールをロックする
-  const [, setScrollLock] = useScrollLock(false);
+  const [, setScrollLock] = useLockedBody(false);
   const lessThanXs = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
   useEffect(() => {
     if (opened && lessThanXs) {

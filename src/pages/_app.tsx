@@ -1,7 +1,7 @@
 import { ColorSchemeProvider, Global, MantineProvider } from '@mantine/core';
-import { useColorScheme, useLocalStorage } from '@mantine/hooks';
 import { DefaultSeo } from 'next-seo';
 import Head from 'next/head';
+import { useDarkMode } from 'usehooks-ts';
 
 import Layout from 'components/layouts/Layout';
 import { siteData } from 'data/siteData';
@@ -10,13 +10,17 @@ import type { ColorScheme } from '@mantine/core';
 import type { AppProps } from 'next/app';
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
-    key: 'mantine-color-scheme',
-    defaultValue: useColorScheme(),
-    getInitialValueInEffect: true,
-  });
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+  const { isDarkMode, toggle, enable, disable } = useDarkMode();
+  const toggleColorScheme = (value?: ColorScheme) => {
+    if (value === 'dark') {
+      enable();
+    } else if (value === 'light') {
+      disable();
+    } else {
+      toggle();
+    }
+  };
+  const colorScheme = isDarkMode ? 'dark' : 'light';
 
   return (
     <>

@@ -26,7 +26,7 @@ export const siteData: SiteData = {
   siteTitle: `${tournamentName} 練習カスタム結果`,
   siteDescription: `${tournamentName} の事前練習カスタム (スクリム) の試合結果をまとめた非公式サイト`,
   siteUrl: '',
-  repositoryUrl: 'https:/github.com/Yuukin256/apex-scrim-result-template',
+  repositoryUrl: 'https://github.com/Yuukin256/apex-scrim-result-template',
   internalLinks: [
     {
       label: 'トップ',

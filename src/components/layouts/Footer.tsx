@@ -70,7 +70,7 @@ const Footer: FC = () => {
             )。
           </Text>
           <Text color='dimmed' size='sm'>
-            Built by <EL href='https:twitter.com/Yuukin256'>Yuukin256</EL> with{' '}
+            Built by <EL href='https://twitter.com/Yuukin256'>Yuukin256</EL> with{' '}
             <EL href='https://nextjs.org/'>Next.js</EL>, <EL href='https://mantine.dev/'>Mantine</EL>, and many awesome
             libraries. Hosted on <EL href='https://vercel.com/'>Vercel</EL>.
           </Text>
@@ -80,7 +80,7 @@ const Footer: FC = () => {
           <ActionIcon<typeof EL>
             size='lg'
             component={EL}
-            href='https:twitter.com/Yuukin256'
+            href='https://twitter.com/Yuukin256'
             title='製作者のTwitterアカウント (@Yuukin256)'
           >
             <IconBrandTwitter size={18} />
