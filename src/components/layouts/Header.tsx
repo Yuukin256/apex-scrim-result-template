@@ -1,4 +1,4 @@
-import { Burger, createStyles, Group, Header as MHeader, MediaQuery, Title } from '@mantine/core';
+import { Burger, createStyles, Group, Header as MHeader, Title } from '@mantine/core';
 
 import ThemeSwitch from 'components/layouts/ThemeSwitch';
 import { siteData } from 'data/siteData';
@@ -8,6 +8,7 @@ import type { Dispatch, FC, SetStateAction } from 'react';
 interface HeaderProps {
   navbarOpened: boolean;
   setNavbarOpened: Dispatch<SetStateAction<boolean>>;
+  shouldRenderThemeSwitch: boolean;
 }
 
 const useStyles = createStyles((theme) => ({
@@ -21,7 +22,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const Header: FC<HeaderProps> = ({ navbarOpened, setNavbarOpened }) => {
+const Header: FC<HeaderProps> = ({ navbarOpened, setNavbarOpened, shouldRenderThemeSwitch }) => {
   const { classes, theme } = useStyles();
   const handleBurgerClick = () => setNavbarOpened((prev) => !prev);
 
@@ -32,11 +33,7 @@ const Header: FC<HeaderProps> = ({ navbarOpened, setNavbarOpened }) => {
         <Title order={4}>{siteData.siteTitle}</Title>
       </Group>
 
-      <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
-        <Group position='center'>
-          <ThemeSwitch />
-        </Group>
-      </MediaQuery>
+      {shouldRenderThemeSwitch && <ThemeSwitch withPopover />}
     </MHeader>
   );
 };

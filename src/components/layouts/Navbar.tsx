@@ -92,6 +92,7 @@ const useStyles = createStyles((theme) => ({
 interface NavbarProps {
   opened: boolean;
   setOpened: Dispatch<SetStateAction<boolean>>;
+  shouldRenderThemeSwitch: boolean;
 }
 
 const OtherSite: FC<{ opened: boolean }> = ({ opened }) => {
@@ -130,7 +131,7 @@ const OtherSite: FC<{ opened: boolean }> = ({ opened }) => {
   );
 };
 
-const Navbar: FC<NavbarProps> = ({ opened, setOpened }) => {
+const Navbar: FC<NavbarProps> = ({ opened, setOpened, shouldRenderThemeSwitch }) => {
   const { classes, cx, theme } = useStyles();
   const { pathname } = useRouter();
 
@@ -176,7 +177,7 @@ const Navbar: FC<NavbarProps> = ({ opened, setOpened }) => {
       {(styles) => (
         <MNavbar fixed width={{ base: '100%', xs: 350 }} style={styles} className={classes.navbar}>
           <ScrollArea type='hover' offsetScrollbars>
-            {lessThanXs && (
+            {shouldRenderThemeSwitch && (
               <MNavbar.Section className={classes.themeSwitchSection}>
                 <ThemeSwitch />
               </MNavbar.Section>

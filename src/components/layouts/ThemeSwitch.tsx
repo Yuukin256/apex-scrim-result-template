@@ -1,54 +1,137 @@
-import { UnstyledButton, Center, Text, createStyles, useMantineColorScheme, Tooltip } from '@mantine/core';
-import { IconMoonStars, IconSun } from '@tabler/icons';
+import { Button, createStyles, Popover, SegmentedControl } from '@mantine/core';
+import { IconBrightness, IconMoonStars, IconSun } from '@tabler/icons';
+import { useCallback } from 'react';
+import { useBoolean } from 'usehooks-ts';
+
+import { useColorScheme } from 'hooks/useColorScheme';
 
 import type { FC } from 'react';
 
 const useStyles = createStyles((theme) => ({
-  control: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+  popoverInner: {
+    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+  },
+
+  label: {
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderRadius: 1000,
-    paddingLeft: theme.spacing.sm,
-    paddingRight: 4,
-    width: 140,
-    height: 36,
+    gap: theme.spacing.xs,
   },
 
-  iconWrapper: {
-    height: 28,
-    width: 28,
-    borderRadius: 28,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.gray[2] : theme.colors.dark[4],
-    color: theme.colorScheme === 'dark' ? theme.black : theme.colors.blue[2],
-  },
-
-  value: {
-    lineHeight: 1,
+  control: {
+    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
   },
 }));
 
-const ThemeSwitch: FC = () => {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+const icons = {
+  light: <IconSun size={16} />,
+  system: <IconBrightness size={16} />,
+  dark: <IconMoonStars size={16} />,
+};
 
-  const anotherScheme = colorScheme === 'light' ? 'ダーク' : 'ライト';
+interface ThemeSwitchControlProps {
+  orientation: 'vertical' | 'horizontal';
+  value: 'light' | 'dark' | 'system';
+  onChange: (value: string) => void;
+}
 
-  const Icon = colorScheme === 'dark' ? IconSun : IconMoonStars;
+const ThemeSwitchControl: FC<ThemeSwitchControlProps> = ({ orientation, value, onChange }) => {
   const { classes } = useStyles();
 
   return (
-    <Tooltip label={`${anotherScheme}テーマに切り替える`} openDelay={300}>
-      <UnstyledButton aria-label='テーマ切り替え' className={classes.control} onClick={() => toggleColorScheme()}>
-        <Text size='sm' className={classes.value}>
-          {`${anotherScheme}テーマ`}
-        </Text>
-        <Center className={classes.iconWrapper}>
-          <Icon size={18} />
-        </Center>
-      </UnstyledButton>
-    </Tooltip>
+    <SegmentedControl
+      value={value}
+      onChange={onChange}
+      data={[
+        {
+          value: 'light',
+          label: <>{icons.light} ライト</>,
+        },
+        {
+          value: 'system',
+          label: <>{icons.system} システム</>,
+        },
+        {
+          value: 'dark',
+          label: <>{icons.dark} ダーク</>,
+        },
+      ]}
+      size='sm'
+      orientation={orientation}
+      classNames={{ label: classes.label, root: classes.control }}
+    />
   );
+};
+
+const WithPopover: FC = () => {
+  const { classes, theme } = useStyles();
+
+  const { value: opened, setValue: setOpened } = useBoolean(false);
+
+  const { ternaryDarkMode, setTernaryDarkMode } = useColorScheme();
+  const handleChange = useCallback(
+    (value: string) => {
+      if (value === 'light' || value === 'dark' || value === 'system') {
+        setTernaryDarkMode(value);
+      }
+      setOpened(false);
+    },
+    [setOpened, setTernaryDarkMode]
+  );
+
+  const button = (
+    <Button
+      onClick={() => setOpened((o) => !o)}
+      variant='subtle'
+      color={theme.colorScheme === 'dark' ? 'gray' : 'dark'}
+      size='sm'
+      leftIcon={icons[ternaryDarkMode]}
+      title='テーマを切り替える'
+    >
+      テーマ
+    </Button>
+  );
+
+  return (
+    <Popover
+      opened={opened}
+      onClose={() => setOpened(false)}
+      target={button}
+      position='bottom'
+      gutter={2}
+      spacing={6}
+      classNames={{
+        inner: classes.popoverInner,
+      }}
+    >
+      <ThemeSwitchControl orientation='vertical' value={ternaryDarkMode} onChange={handleChange} />
+    </Popover>
+  );
+};
+
+const WithoutPopover: FC = () => {
+  const { ternaryDarkMode, setTernaryDarkMode } = useColorScheme();
+  const handleChange = useCallback(
+    (value: string) => {
+      if (value === 'light' || value === 'dark' || value === 'system') {
+        setTernaryDarkMode(value);
+      }
+    },
+    [setTernaryDarkMode]
+  );
+
+  return <ThemeSwitchControl orientation='horizontal' value={ternaryDarkMode} onChange={handleChange} />;
+};
+
+interface ThemeSwitchProps {
+  withPopover?: boolean;
+}
+
+const ThemeSwitch: FC<ThemeSwitchProps> = ({ withPopover }) => {
+  if (withPopover) return <WithPopover />;
+  else return <WithoutPopover />;
 };
 
 export default ThemeSwitch;

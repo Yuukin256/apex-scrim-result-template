@@ -1,26 +1,15 @@
-import { ColorSchemeProvider, Global, MantineProvider } from '@mantine/core';
+import { Global, MantineProvider } from '@mantine/core';
 import { DefaultSeo } from 'next-seo';
 import Head from 'next/head';
-import { useDarkMode } from 'usehooks-ts';
 
 import Layout from 'components/layouts/Layout';
 import { siteData } from 'data/siteData';
+import { useColorScheme } from 'hooks/useColorScheme';
 
-import type { ColorScheme } from '@mantine/core';
 import type { AppProps } from 'next/app';
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const { isDarkMode, toggle, enable, disable } = useDarkMode();
-  const toggleColorScheme = (value?: ColorScheme) => {
-    if (value === 'dark') {
-      enable();
-    } else if (value === 'light') {
-      disable();
-    } else {
-      toggle();
-    }
-  };
-  const colorScheme = isDarkMode ? 'dark' : 'light';
+  const { colorScheme } = useColorScheme();
 
   return (
     <>
@@ -44,35 +33,33 @@ const App = ({ Component, pageProps }: AppProps) => {
         }}
       />
 
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider
-          withNormalizeCSS
-          theme={{
-            colorScheme: colorScheme,
-            fontSizes: {
-              xs: 12,
-              sm: 14,
-              md: 15,
-              lg: 16,
-              xl: 18,
+      <MantineProvider
+        withNormalizeCSS
+        theme={{
+          colorScheme,
+          fontSizes: {
+            xs: 12,
+            sm: 14,
+            md: 15,
+            lg: 16,
+            xl: 18,
+          },
+        }}
+      >
+        <Global
+          styles={(theme) => ({
+            body: {
+              ...theme.fn.fontStyles(),
+              color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+              lineHeight: theme.lineHeight,
+              minHeight: '100vh',
             },
-          }}
-        >
-          <Global
-            styles={(theme) => ({
-              body: {
-                ...theme.fn.fontStyles(),
-                color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-                lineHeight: theme.lineHeight,
-                minHeight: '100vh',
-              },
-            })}
-          />
-          <Layout {...siteData}>
-            <Component {...pageProps} />
-          </Layout>
-        </MantineProvider>
-      </ColorSchemeProvider>
+          })}
+        />
+        <Layout {...siteData}>
+          <Component {...pageProps} />
+        </Layout>
+      </MantineProvider>
     </>
   );
 };
